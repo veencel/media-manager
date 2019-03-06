@@ -168,7 +168,7 @@ class MediaManager implements FileUploaderInterface, FileMoverInterface
             'name'     => basename($path),
             'mimeType' => 'folder',
             'fullPath' => $path,
-            'modified' => $this->fileModified($path),
+            'modified' => ['date' => $this->fileModified($path)->toDateTimeString()],
         ];
     }
 
@@ -189,7 +189,7 @@ class MediaManager implements FileUploaderInterface, FileMoverInterface
             'webPath'      => $this->fileWebpath($path),
             'mimeType'     => $this->fileMimeType($path),
             'size'         => $this->fileSize($path),
-            'modified'     => $this->fileModified($path),
+            'modified'     => ['date' => $this->fileModified($path)->toDateTimeString()],
             'relativePath' => $this->fileRelativePath($path),
         ];
     }

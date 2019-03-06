@@ -1,72 +1,72 @@
 <template>
-  <div 
-    class="btn-toolbar" 
+  <div
+    class="btn-toolbar"
     role="toolbar">
     <div class="btn-group offset-right">
       <!-- File input wont get triggered if this is a button so use a label instead -->
-      <label 
-        class="btn btn-primary btn-icon-text btn-file" 
+      <label
+        class="btn btn-primary btn-icon-text btn-file mb-0"
         title="Select files to be uploaded - or drag files into the main window pane">
         <i class="icon-upload"/>
-        <span class="hidden-xs">Upload</span>
+        <span class="d-none d-sm-inline-block">Upload</span>
         <input
-          class="hidden"
+          class="d-none"
           name="files[]"
           type="file"
-          @change="uploadFile($event.target.name, $event.target.files)" 
+          @change="uploadFile($event.target.name, $event.target.files)"
         >
       </label>
 
-      <button 
-        class="btn btn-primary btn-icon-text" 
-        type="button" 
+      <button
+        class="btn btn-primary btn-icon-text"
+        type="button"
         title="Add folder"
         @click="openModalCreateFolder()">
         <i class="icon-folder-plus"/>
-        <span class="hidden-xs">Add folder</span>
+        <span class="d-none d-sm-inline-block">Add folder</span>
       </button>
     </div>
 
-    <div class="btn-group offset-right">
-      <button 
-        class="btn btn-default btn-icon-text" 
-        type="button" 
-        title="Refresh" 
+    <div class="btn-group ml-1 mr-1">
+      <button
+        class="btn btn-secondary btn-icon-text"
+        type="button"
+        title="Refresh"
         @click="refresh()">
         <i class="icon-loop2"/>
-        <span class="hidden-xs">Refresh</span>
+        <span class="d-none d-sm-inline-block">Refresh</span>
       </button>
     </div>
 
-    <div class="btn-group offset-right">
+    <div class="btn-group">
       <button
         :disabled="!isFile(currentFile)"
-        class="btn btn-default btn-icon-text" 
-        type="button" 
+        class="btn btn-secondary btn-icon-text"
+        type="button"
         title="Move"
         @click="openModalMoveItem()" >
         <i class="icon-arrow-right"/>
-        <span class="hidden-xs">Move</span>
-      </button>
-
-      <button 
-        :disabled="!isFile(currentFile)"
-        class="btn btn-default btn-icon-text"
-        type="button" 
-        title="Delete"
-        @click="openModalDeleteItem()" >
-        <i class="icon-bin"/>
-        <span class="hidden-xs">Delete</span>
+        <span class="d-none d-sm-inline-block">Move</span>
       </button>
 
       <button
         :disabled="!isFile(currentFile)"
-        class="btn btn-default btn-icon-text" 
-        type="button" 
+        class="btn btn-secondary btn-icon-text"
+        type="button"
+        title="Delete"
+        @click="openModalDeleteItem()" >
+        <i class="icon-bin"/>
+        <span class="d-none d-sm-inline-block">Delete</span>
+      </button>
+
+      <button
+        :disabled="!isFile(currentFile)"
+        class="btn btn-secondary btn-icon-text"
+        type="button"
         title="Rename"
         @click="openModalRenameItem()" >
         <i class="icon-pencil"/>
-        <span class="hidden-xs">Rename</span>
+        <span class="d-none d-sm-inline-block">Rename</span>
       </button>
     </div>
 

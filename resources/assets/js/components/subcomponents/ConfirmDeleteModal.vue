@@ -1,20 +1,20 @@
 <template>
   <media-modal
     v-if="show"
-    :size="size" 
+    :size="size"
     :show="show"
     @media-modal-close="close()">
     <div>
       <div class="modal-header">
-        <button 
-          class="close" 
-          type="button" 
-          @click="close()">×</button>
         <h4 class="modal-title">Delete item</h4>
+        <button
+          class="close"
+          type="button"
+          @click="close()">×</button>
       </div>
 
-      <div 
-        v-if="loading" 
+      <div
+        v-if="loading"
         class="text-center">
         <span class="spinner icon-spinner2"/>Loading...
       </div>
@@ -29,15 +29,15 @@
         </div>
 
         <div class="modal-footer">
-          <button 
-            class="btn btn-primary" 
-            type="button" 
+          <button
+            class="btn btn-primary"
+            type="button"
             @click="deleteItem()">
             Delete
           </button>
-          <button 
-            class="btn btn-default" 
-            type="button" 
+          <button
+            class="btn btn-secondary"
+            type="button"
             @click="close">
             Cancel
           </button>
@@ -49,7 +49,6 @@
 
 <script>
 
-import axios from "axios";
 import fileManagerMixin from "./../../mixins/file-manager-mixin";
 
 export default{
@@ -86,7 +85,7 @@ export default{
 		return {
 			loading: false,
 			newItemName: null,
-			size: "modal-md"
+			size: "modal-lg"
 		};
 	},
 

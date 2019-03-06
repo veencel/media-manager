@@ -1,13 +1,13 @@
 <template>
   <div
     v-if="isFile(currentFile) && !isFolder(currentFile)"
-    class="media-manager-file-picker-sidebar hidden-xs col-sm-3">
+    class="media-manager-file-picker-sidebar d-none d-sm-inline-block col-sm-3">
 
     <img
       v-if="isImage(currentFile)"
       id="media-manager-preview-image"
       :src="currentFile.webPath"
-      class="img-responsive center-block"
+      class="img-fluid center-block"
     >
 
     <div

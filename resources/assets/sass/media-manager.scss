@@ -79,11 +79,6 @@ $editor-height: 60vh;
   transition: all .3s ease;
 }
 
-.modal-lg {
-  margin: 2em !important;
-  width: auto !important;
-}
-
 .modal-header h4 {
   margin-top: 0;
 }
@@ -124,20 +119,12 @@ $editor-height: 60vh;
 
 // Media Manager Styles...
 #media-manager-file-picker {
-
   .modal-footer {
-
     &.vertical-center {
-
       .item-count {
-        flex: 1 0 0;
-        text-align: left;
-      }
-      .buttons {
-        flex: 4 0 0;
+        margin-right: auto;
       }
     }
-
   }
 
   .media-manager-alternative-content {
@@ -327,4 +314,8 @@ $editor-height: 60vh;
 
 .growl-animated.alert-danger {
   box-shadow: 0 0 5px rgba(244, 67, 54, 0.5);
+}
+
+.toolbar label.btn {
+  cursor: pointer;
 }

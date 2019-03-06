@@ -2,13 +2,6 @@
   <transition name="modal">
     <div id="media-manager-file-picker">
       <div class="modal-header">
-        <!-- Close button for modal windows -->
-        <button 
-          v-if="isModal" 
-          type="button" 
-          class="close" 
-          @click="close()">×</button>
-
         <top-toolbar
           :current-file="currentFile"
           :current-path="currentPath"
@@ -19,14 +12,19 @@
           @open-modal-rename-item="showRenameItemModal = true"
           @upload-file="uploadFile"
         />
-
+        <!-- Close button for modal windows -->
+        <button
+          v-if="isModal"
+          type="button"
+          class="close"
+          @click="close()">×</button>
       </div>
 
-      <div 
-        id="mediaManagerDropZone" 
+      <div
+        id="mediaManagerDropZone"
         class="dropzone">
-        <div 
-          v-if="loading" 
+        <div
+          v-if="loading"
           class="media-manager-alternative-content loading">
           <p>
             <span class="spinner icon-spinner2"/>Loading...
@@ -37,16 +35,23 @@
 
         <div v-else>
 
+          <ul
+            v-if="alert.messages.length"
+            :class="'alert-'+ alert.type"
+            class="alert">
+            <li v-for="message in alert.messages">{{ message }}</li>
+          </ul>
+
           <div class="media-manager-file-browser">
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-sm">
                 <ol class="breadcrumb">
 
-                  <li 
-                    v-for="(name, key) in breadCrumbs" 
+                  <li
+                    v-for="(name, key) in breadCrumbs"
                     :key="name">
-                    <a 
-                      href="javascript:void(0);" 
+                    <a
+                      href="javascript:void(0);"
                       @click="loadFolder(key)">{{ name }}</a>
                   </li>
 
@@ -57,8 +62,8 @@
               </div>
             </div>
 
-            <div 
-              v-if="isFolderEmpty" 
+            <div
+              v-if="isFolderEmpty"
               class="media-manager-alternative-content">
               <h4>This folder is empty.</h4>
               <p>
@@ -66,10 +71,10 @@
               </p>
             </div>
 
-            <div 
-              v-else 
+            <div
+              v-else
               class="row">
-              <div 
+              <div
                 :class="{ 'col-sm-12' : !isFile(currentFile) || isFolder(currentFile), 'col-sm-9' : isFile(currentFile) && ! isFolder(currentFile) }"
                 class="col-xs-12">
 
@@ -78,19 +83,19 @@
                   <table class="table table-condensed table-vmiddle">
                     <thead>
                       <tr>
-                        <th><a 
-                          href="javascript:void(0);" 
+                        <th><a
+                          href="javascript:void(0);"
                           @click="orderBy('name')">Name</a></th>
-                        <th><a 
-                          href="javascript:void(0);" 
+                        <th><a
+                          href="javascript:void(0);"
                           @click="orderBy('mimeType')">Type</a></th>
-                        <th><a 
-                          href="javascript:void(0);" 
+                        <th><a
+                          href="javascript:void(0);"
                           @click="orderBy('modified.date')">Date</a></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr 
+                      <tr
                         v-for="folder in folders"
                         :key="folder.name"
                         :class="[ (folder == currentFile) ? 'bg-primary' : '' ]"
@@ -111,19 +116,19 @@
                         <td>{{ folder.modified.date | formatDate('DD/MM/YYYY') }}</td>
                       </tr>
 
-                      <tr 
+                      <tr
                         v-for="file in files"
                         :key="file.name"
                         :class="[ (file == currentFile) ? 'bg-primary' : '' ]">
                         <td>
-                          <i 
-                            v-if="isImage(file)" 
+                          <i
+                            v-if="isImage(file)"
                             class="icon-image"/>
-                          <i 
-                            v-else 
+                          <i
+                            v-else
                             class="icon-file-text2"/>
-                          <a 
-                            class="word-wrappable" 
+                          <a
+                            class="word-wrappable"
                             href="javascript:void(0);"
                             @click="previewFile(file)"
                             @keyup.enter="selectFile(file)"
@@ -151,8 +156,8 @@
           </div>
 
           <!-- Buttons to be rendered if the media-manager is in a modal window-->
-          <div 
-            v-if="isModal" 
+          <div
+            v-if="isModal"
             class="buttons">
             <button
               v-show="currentFile && !isFolder(currentFile)"
@@ -161,9 +166,9 @@
               @click="selectFile()">
               Select File
             </button>
-            <button 
-              type="button" 
-              class="btn btn-default" 
+            <button
+              type="button"
+              class="btn btn-secondary"
               @click="close()">
               Close
             </button>
@@ -213,8 +218,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import {orderBy} from "lodash";
+import { castArray, orderBy } from "lodash";
 import fileManagerMixin from "./../mixins/file-manager-mixin";
 
 import RenameItemModal from "./subcomponents/RenameItemModal";
@@ -338,7 +342,13 @@ export default{
 			/**
              * property to hold direction of column sorting
              */
-			sortDirection: false
+			sortDirection: false,
+
+            alert: {
+			  messages: [],
+              type: 'success',
+              timer: null
+            }
 		};
 	},
 
@@ -351,6 +361,7 @@ export default{
 	mounted: function () {
 		this.loadFolder();
 		this.dragUpload();
+		this.listenNotifications();
 
 		if( ! this.prefix.endsWith("/") )
 		{
@@ -434,7 +445,7 @@ export default{
 				.map(x => {
 					form.append(fieldName, fileList[x], fileList[x].name);
 				});
-                
+
 			form.append("folder", this.currentPath);
 
 			this.loading = true;
@@ -450,15 +461,22 @@ export default{
 					this.mediaManagerNotify(response.data.success);
 					this.loadFolder(this.currentPath);
 				},
-				(response) => {
-					const error = (response.data.error) ? response.data.error : response.statusText;
-					// when uploading we might have some files uploaded and others fail
-					if (response.data.notices) this.mediaManagerNotify(response.data.notices);
-					this.mediaManagerNotify(error, "danger", 5000);
-					this.loadFolder(this.currentPath);
+				(error) => {
+				  this.loadFolder(this.currentPath);
+
+				  if (! error.hasOwnProperty("response")) {
+				      return;
+				  }
+
+				  if (error.response.data.hasOwnProperty("error")) {
+				      this.mediaManagerNotify(error.response.data.error, "danger", 5000);
+				  }
+
+				  if (error.response.data.hasOwnProperty("notices")) {
+				      this.mediaManagerNotify(error.response.data.notices);
+				  }
 				}
 			);
-
 		},
 
 		selectFile(){
@@ -516,6 +534,22 @@ export default{
 					}
 				}
 			});
+		},
+
+        listenNotifications() {
+		    eventHub.$on("media-manager-notification", (messages, type, fadeTime) => {
+		        if (this.alert.timer) {
+		            clearTimeout(this.alert.timer);
+		        }
+
+		        this.alert.messages = castArray(messages);
+		        this.alert.type = type;
+
+		        this.alert.timer = setTimeout(() => {
+		            this.alert.messages = [];
+		            this.alert.timer = null;
+                }, fadeTime);
+		    });
 		}
 	}
 };

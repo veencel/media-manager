@@ -1,7 +1,7 @@
 <template>
   <transition name="modal">
-    <div 
-      class="modal media-modal modal-mask" 
+    <div
+      class="modal media-modal modal-mask"
       @click="$emit('media-modal-close')">
       <div
         :class="[size]"
@@ -20,7 +20,7 @@ export default {
 
 	props: {
 		"size" :{
-			default : "modal-lg",
+			default : "modal-xl",
 			type: String
 		}
 	},

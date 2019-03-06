@@ -223,10 +223,8 @@ class MediaController extends Controller
      */
     private function errorResponse($error, $notices = [], $errorCode = 400)
     {
-        if (is_array($error)) {
-            json_encode($error);
-        }
         $payload = ['error' => $error];
+
         if (!empty($notices)) {
             $payload['notices'] = $notices;
         }

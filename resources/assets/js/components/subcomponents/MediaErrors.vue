@@ -1,11 +1,10 @@
 <template>
-  <div 
-    v-if="errors.length > 0" 
-    class="modal-errors" 
+  <div
+    class="modal-errors"
     transition="expand">
     <ul>
-      <li 
-        v-for="error in errors" 
+      <li
+        v-for="error in errors"
         :key="error">{{ error }}</li>
     </ul>
   </div>

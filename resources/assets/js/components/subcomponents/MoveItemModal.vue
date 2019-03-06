@@ -7,12 +7,12 @@
   >
     <div>
       <div class="modal-header">
+        <h4 class="modal-title">Move item</h4>
         <button
           class="close"
           type="button"
           @click="close()">×
         </button>
-        <h4 class="modal-title">Move item</h4>
       </div>
 
       <div
@@ -45,7 +45,9 @@
             </select>
           </div>
 
-          <media-errors :errors="errors"/>
+          <media-errors
+            v-if="errors.length > 0"
+            :errors="errors"/>
         </div>
 
         <div class="modal-footer">
@@ -56,7 +58,7 @@
             Apply
           </button>
           <button
-            class="btn btn-default"
+            class="btn btn-secondary"
             type="button"
             @click="close()">
             Cancel
@@ -69,7 +71,6 @@
 
 <script>
 
-import axios from "axios";
 import fileManagerMixin from "./../../mixins/file-manager-mixin";
 import MediaErrors from "./MediaErrors";
 
@@ -113,7 +114,7 @@ export default {
 			errors: [],
 			newFolderLocation: null,
 			loading: false,
-			size: "modal-md"
+			size: "modal-lg"
 		};
 	},
 

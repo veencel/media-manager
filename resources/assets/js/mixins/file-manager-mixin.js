@@ -42,7 +42,7 @@ export default {
 			return (file.mimeType === "folder");
 		},
 
-		mediaManagerNotify: (notices, type = "inverse", time = 4000) => {
+		mediaManagerNotify: (notices, type = "success", time = 4000) => {
 
 			if (typeof notices === "object") {
 				notices.forEach(function(notice) {
